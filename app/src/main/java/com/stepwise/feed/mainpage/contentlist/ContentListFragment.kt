@@ -1,18 +1,27 @@
 package com.stepwise.feed.mainpage.contentlist
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.stepwise.feed.R
 import com.stepwise.feed.databinding.FragmentContentlistBinding
+import com.stepwise.feed.mainpage.MainPageFragment
 import com.stepwise.feed.mainpage.MainPageViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 
-class ContentListFragment: Fragment() {
+interface ContentListFragmentListener {
+    fun onAddItemTapped(fragment: ContentListFragment)
+}
+
+class ContentListFragment: Fragment(), MainPageFragment {
     private lateinit var binding: FragmentContentlistBinding
     private lateinit var contentItemAdapter: ContentAdapter
+    private lateinit var listener: ContentListFragmentListener
 
     private val contentItemList = ArrayList<ContentListItemViewModel>()
 
@@ -37,9 +46,27 @@ class ContentListFragment: Fragment() {
         binding.mainActivityListItems.layoutManager = LinearLayoutManager(this.context)
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        if(context is ContentListFragmentListener) {
+            this.listener = context
+        }
+        else {
+            throw IllegalMonitorStateException("Context should implement ContentListFragmentListener interface")
+        }
+    }
+
 
     fun updateContent(viewModel: MainPageViewModel) {
         contentItemList.addAll(viewModel.newItems)
         contentItemAdapter.notifyDataSetChanged()
+    }
+
+    override fun configurePrimaryButton(fab: FloatingActionButton) {
+        fab.setImageResource(R.drawable.baseline_add_white_18)
+        fab.setOnClickListener { _ ->
+           this.listener.onAddItemTapped(this)
+        }
     }
 }

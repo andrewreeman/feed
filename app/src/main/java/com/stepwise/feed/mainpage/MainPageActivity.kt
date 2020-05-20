@@ -5,15 +5,25 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.stepwise.feed.R
 import com.stepwise.feed.mainpage.addcontent.AddItemFragment
+import com.stepwise.feed.mainpage.addcontent.AddItemFragmentListener
 import com.stepwise.feed.mainpage.contentlist.ContentListFragment
+import com.stepwise.feed.mainpage.contentlist.ContentListFragmentListener
 import com.stepwise.feed.root.App
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainPageActivity : AppCompatActivity(), MainPageMVP.View {
+interface MainPageFragment {
+    fun configurePrimaryButton(fab: FloatingActionButton)
+}
+
+class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
+    ContentListFragmentListener,
+    AddItemFragmentListener
+{
+
 
     private lateinit var addItemFragment: AddItemFragment
     private lateinit var contentListFragment: ContentListFragment
@@ -26,19 +36,19 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         (application as App).appComponent.inject(this)
-        
-        fab.setOnClickListener { _ ->
-            presenter.onAddItemTapped()
-        }
 
         contentListFragment = ContentListFragment.newInstance()
         addItemFragment = AddItemFragment.newInstance()
+        supportFragmentManager.addOnBackStackChangedListener {
+            configurePrimaryButton(supportFragmentManager.fragments.first())
+        }
 
         supportFragmentManager.beginTransaction()
             .add(R.id.main_page_fragment_container, contentListFragment)
             .commit()
-
         presenter.setView(this)
+
+        configurePrimaryButton(contentListFragment)
     }
 
     override fun onResume() {
@@ -68,6 +78,21 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View {
             .beginTransaction()
             .remove(contentListFragment)
             .add(R.id.main_page_fragment_container, addItemFragment)
+            .addToBackStack(null)
             .commit()
+    }
+
+    override fun onAddItemTapped(fragment: ContentListFragment) {
+        presenter.onAddItemTapped()
+    }
+
+    override fun onNewItemCreated(title: String, description: String) {
+        //presenter.onNewItemCreated(title, description)
+    }
+
+    private fun configurePrimaryButton(fragment: Fragment?) {
+        if(fragment is MainPageFragment) {
+            fragment.configurePrimaryButton(main_activity_primary_button)
+        }
     }
 }
