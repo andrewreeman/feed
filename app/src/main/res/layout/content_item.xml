@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:background="?android:selectableItemBackground"
+    android:id="@+id/main_page_list_item"
+    >
+
+    <TextView
+        android:id="@+id/main_page_list_item_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        tools:text="An item title"
+        android:gravity="start"
+        android:layout_gravity="center_vertical"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textColor="#000000"
+        android:textSize="25sp"
+        >
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/main_page_list_item_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="An item description that is longer than the item title."
+        android:layout_gravity="center_vertical"
+        android:textAppearance="?attr/textAppearanceSearchResultSubtitle"
+        android:textColor="#000000"
+        >
+    </TextView>
+</LinearLayout>
