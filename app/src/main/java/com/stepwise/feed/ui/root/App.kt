@@ -1,7 +1,8 @@
-package com.stepwise.feed.root
+package com.stepwise.feed.ui.root
 
 import android.app.Application
-import com.stepwise.feed.mainpage.MainPageModule
+import com.stepwise.feed.repository.ContentRepositoryModule
+import com.stepwise.feed.ui.mainpage.MainPageModule
 
 class App: Application() {
     lateinit var appComponent: AppComponent
@@ -12,6 +13,7 @@ class App: Application() {
         appComponent = DaggerAppComponent.builder()
             .appModule(AppModule(this))
             .mainPageModule(MainPageModule())
+            .contentRepositoryModule(ContentRepositoryModule())
             .build()
     }
 }

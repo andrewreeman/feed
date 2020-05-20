@@ -1,9 +1,9 @@
 @file:Suppress("RemoveRedundantQualifierName")
 
-package com.stepwise.feed.mainpage
+package com.stepwise.feed.ui.mainpage
 
-import com.stepwise.feed.mainpage.addcontent.CreateNewItemErrorViewModel
-import com.stepwise.feed.mainpage.contentlist.ContentListItemViewModel
+import com.stepwise.feed.ui.mainpage.addcontent.CreateNewItemErrorViewModel
+import com.stepwise.feed.ui.mainpage.contentlist.ContentListItemViewModel
 
 interface MainPageMVP {
     interface View {
