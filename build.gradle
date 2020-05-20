@@ -30,4 +30,6 @@ task clean(type: Delete) {
 
 ext {
     daggerVersion = '2.27'
+    retrofitVersion = '2.8.1'
+    okHttpVersion = '4.6.0'
 }
