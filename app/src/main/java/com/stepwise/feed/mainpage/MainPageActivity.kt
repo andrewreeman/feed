@@ -27,7 +27,7 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View {
         setSupportActionBar(toolbar)
         (application as App).appComponent.inject(this)
         
-        fab.setOnClickListener { view ->
+        fab.setOnClickListener { _ ->
             presenter.onAddItemTapped()
         }
 
