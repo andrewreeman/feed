@@ -30,4 +30,5 @@ task clean(type: Delete) {
 
 ext {
     butterknifeVersion = '10.2.1'
+    daggerVersion = '2.27'
 }

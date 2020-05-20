@@ -1,3 +1,5 @@
 package com.stepwise.feed.mainpage
 
-data class MainPageViewModel(val updatedItems: List<ContentViewModel>)
+import com.stepwise.feed.mainpage.contentlist.ContentListItemViewModel
+
+data class MainPageViewModel(val newItems: List<ContentListItemViewModel>)

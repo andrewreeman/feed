@@ -1,4 +1,4 @@
-package com.stepwise.feed.mainpage
+package com.stepwise.feed.mainpage.contentlist
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +10,12 @@ import butterknife.ButterKnife
 import com.stepwise.feed.R
 
 
-class ContentAdapter(private val content: List<ContentViewModel>): RecyclerView.Adapter<ContentAdapter.ViewHolder>() {
+class ContentAdapter(private val content: List<ContentListItemViewModel>): RecyclerView.Adapter<ContentAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val contentItemView = LayoutInflater.from(parent.context).inflate(R.layout.content_item, parent, false)
-        return ViewHolder(contentItemView)
+        return ViewHolder(
+            contentItemView
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -37,10 +39,9 @@ class ContentAdapter(private val content: List<ContentViewModel>): RecyclerView.
             ButterKnife.bind(this, view)
         }
 
-        fun set(vm: ContentViewModel) {
+        fun set(vm: ContentListItemViewModel) {
             title.text = vm.title
             description.text = vm.description
         }
-
     }
 }

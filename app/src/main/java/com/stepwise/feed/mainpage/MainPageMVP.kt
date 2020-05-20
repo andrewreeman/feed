@@ -1,6 +1,7 @@
 package com.stepwise.feed.mainpage
 
 import androidx.lifecycle.ViewModel
+import com.stepwise.feed.mainpage.contentlist.ContentListItemViewModel
 
 interface MainPageMVP {
     interface View {
@@ -8,10 +9,11 @@ interface MainPageMVP {
     }
 
     interface Presenter {
+        fun setView(view: MainPageMVP.View)
         fun loadContent()
     }
 
     interface Model {
-        fun getContent(): List<ViewModel>
+        fun getContent(): List<ContentListItemViewModel>
     }
 }
