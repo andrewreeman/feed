@@ -8,8 +8,8 @@
     android:layout_gravity="bottom"
     android:clipToPadding="false"
     android:scrollbars="vertical"
+    android:padding="@dimen/content_padding"
     tools:listItem="@layout/list_row"
     tools:showIn="@layout/activity_main"
     tools:context=".mainpage.MainPageActivity"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    />
+    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
