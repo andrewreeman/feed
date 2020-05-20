@@ -1,15 +1,13 @@
 package com.stepwise.feed
 
 import android.content.res.Resources
-import com.stepwise.feed.mainpage.MainPageMVP
-import com.stepwise.feed.mainpage.MainPageViewModel
-import com.stepwise.feed.mainpage.Presenter
-import com.stepwise.feed.mainpage.addcontent.CreateNewItemErrorViewModel
-import com.stepwise.feed.mainpage.contentlist.ContentListItemViewModel
+import com.stepwise.feed.ui.mainpage.MainPageMVP
+import com.stepwise.feed.ui.mainpage.MainPageViewModel
+import com.stepwise.feed.ui.mainpage.Presenter
+import com.stepwise.feed.ui.mainpage.addcontent.CreateNewItemErrorViewModel
+import com.stepwise.feed.ui.mainpage.contentlist.ContentListItemViewModel
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers
-import org.mockito.Mockito
 import org.mockito.Mockito.*
 
 class MainPageMVPTests {

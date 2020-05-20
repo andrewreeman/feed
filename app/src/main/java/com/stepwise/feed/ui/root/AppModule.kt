@@ -1,4 +1,4 @@
-package com.stepwise.feed.root
+package com.stepwise.feed.ui.root
 
 import android.content.Context
 import dagger.Module

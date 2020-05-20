@@ -1,4 +1,4 @@
-package com.stepwise.feed.mainpage
+package com.stepwise.feed.ui.mainpage
 
 import android.os.Bundle
 import android.view.Menu
@@ -8,13 +8,13 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.stepwise.feed.R
-import com.stepwise.feed.mainpage.addcontent.AddItemFragment
-import com.stepwise.feed.mainpage.addcontent.AddItemFragmentListener
-import com.stepwise.feed.mainpage.addcontent.CreateNewItemErrorViewModel
-import com.stepwise.feed.mainpage.contentlist.ContentListFragment
-import com.stepwise.feed.mainpage.contentlist.ContentListFragmentListener
-import com.stepwise.feed.mainpage.contentlist.ContentListItemViewModel
-import com.stepwise.feed.root.App
+import com.stepwise.feed.ui.mainpage.addcontent.AddItemFragment
+import com.stepwise.feed.ui.mainpage.addcontent.AddItemFragmentListener
+import com.stepwise.feed.ui.mainpage.addcontent.CreateNewItemErrorViewModel
+import com.stepwise.feed.ui.mainpage.contentlist.ContentListFragment
+import com.stepwise.feed.ui.mainpage.contentlist.ContentListFragmentListener
+import com.stepwise.feed.ui.mainpage.contentlist.ContentListItemViewModel
+import com.stepwise.feed.ui.root.App
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -26,8 +26,6 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
     ContentListFragmentListener,
     AddItemFragmentListener
 {
-
-
     private lateinit var addItemFragment: AddItemFragment
     private lateinit var contentListFragment: ContentListFragment
 

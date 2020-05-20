@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".mainpage.contentlist.ContentListFragment">
+    tools:context=".ui.mainpage.contentlist.ContentListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
 
@@ -19,7 +19,7 @@
 
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
 
-        tools:context=".mainpage.MainPageActivity"
+        tools:context=".ui.mainpage.MainPageActivity"
         tools:listItem="@layout/list_row"
         tools:showIn="@layout/activity_main" />
 

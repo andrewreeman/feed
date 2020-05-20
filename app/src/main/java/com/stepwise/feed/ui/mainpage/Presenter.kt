@@ -1,8 +1,8 @@
-package com.stepwise.feed.mainpage
+package com.stepwise.feed.ui.mainpage
 
 import android.content.res.Resources
 import com.stepwise.feed.R
-import com.stepwise.feed.mainpage.addcontent.CreateNewItemErrorViewModel
+import com.stepwise.feed.ui.mainpage.addcontent.CreateNewItemErrorViewModel
 
 class Presenter(private val model: MainPageMVP.Model, private val resources: Resources): MainPageMVP.Presenter {
     private var view: MainPageMVP.View? = null

@@ -9,10 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name=".root.App"
+        android:name="com.stepwise.feed.ui.root.App"
         >
         <activity
-            android:name=".mainpage.MainPageActivity"
+            android:name="com.stepwise.feed.ui.mainpage.MainPageActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

@@ -1,4 +1,4 @@
-package com.stepwise.feed.mainpage.addcontent
+package com.stepwise.feed.ui.mainpage.addcontent
 
 import android.content.Context
 import android.os.Bundle
@@ -9,8 +9,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.stepwise.feed.R
 import com.stepwise.feed.databinding.FragmentAdditemBinding
-import com.stepwise.feed.mainpage.MainPageFragment
-import kotlinx.android.synthetic.main.activity_main.*
+import com.stepwise.feed.ui.mainpage.MainPageFragment
 
 interface AddItemFragmentListener {
     fun onNewItemCreated(title: String, description: String)

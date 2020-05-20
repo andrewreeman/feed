@@ -1,4 +1,4 @@
-package com.stepwise.feed.mainpage.contentlist
+package com.stepwise.feed.ui.mainpage.contentlist
 
 import android.content.Context
 import android.os.Bundle
@@ -10,9 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.stepwise.feed.R
 import com.stepwise.feed.databinding.FragmentContentlistBinding
-import com.stepwise.feed.mainpage.MainPageFragment
-import com.stepwise.feed.mainpage.MainPageViewModel
-import kotlinx.android.synthetic.main.activity_main.*
+import com.stepwise.feed.ui.mainpage.MainPageFragment
+import com.stepwise.feed.ui.mainpage.MainPageViewModel
 
 interface ContentListFragmentListener {
     fun onAddItemTapped(fragment: ContentListFragment)

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".mainpage.MainPageActivity"
+    tools:context=".ui.mainpage.MainPageActivity"
     android:id="@+id/activity_main_page_container"
     >
 

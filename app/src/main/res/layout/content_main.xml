@@ -10,6 +10,6 @@
     android:layout_gravity="top"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
 
-    tools:context=".mainpage.MainPageActivity"
+    tools:context=".ui.mainpage.MainPageActivity"
     tools:listItem="@layout/list_row"
     tools:showIn="@layout/activity_main" />
