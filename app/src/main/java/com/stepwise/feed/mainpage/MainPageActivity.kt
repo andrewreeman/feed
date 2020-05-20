@@ -6,11 +6,14 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.stepwise.feed.R
 import com.stepwise.feed.mainpage.addcontent.AddItemFragment
 import com.stepwise.feed.mainpage.addcontent.AddItemFragmentListener
+import com.stepwise.feed.mainpage.addcontent.CreateNewItemErrorViewModel
 import com.stepwise.feed.mainpage.contentlist.ContentListFragment
 import com.stepwise.feed.mainpage.contentlist.ContentListFragmentListener
+import com.stepwise.feed.mainpage.contentlist.ContentListItemViewModel
 import com.stepwise.feed.root.App
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -82,17 +85,34 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
             .commit()
     }
 
+    override fun onNewItemCreated(newItem: ContentListItemViewModel) {
+        supportFragmentManager.popBackStack()
+        contentListFragment.updateContent(MainPageViewModel(listOf(newItem)))
+        showSnackbarMessage(getString(R.string.new_item_created))
+    }
+
+    override fun createNewItemError(error: CreateNewItemErrorViewModel) {
+        if(addItemFragment.isVisible) {
+            addItemFragment.showCreateNewItemError(error)
+            showSnackbarMessage(getString(R.string.new_item_error))
+        }
+    }
+
     override fun onAddItemTapped(fragment: ContentListFragment) {
         presenter.onAddItemTapped()
     }
 
     override fun onNewItemCreated(title: String, description: String) {
-        //presenter.onNewItemCreated(title, description)
+        presenter.createNewItem(title, description)
     }
 
     private fun configurePrimaryButton(fragment: Fragment?) {
         if(fragment is MainPageFragment) {
             fragment.configurePrimaryButton(main_activity_primary_button)
         }
+    }
+
+    private fun showSnackbarMessage(message: String) {
+        Snackbar.make(activity_main_page_container, message, Snackbar.LENGTH_LONG).show()
     }
 }

@@ -9,6 +9,7 @@ interface MainPageMVP {
     interface View {
         fun updateContent(viewModel: MainPageViewModel)
         fun navigateToAddItem()
+        fun onNewItemCreated(newItem: ContentListItemViewModel)
         fun createNewItemError(error: CreateNewItemErrorViewModel)
     }
 
@@ -20,7 +21,7 @@ interface MainPageMVP {
     }
 
     interface Model {
-        fun createNewItem(title: String, description: String)
+        fun createNewItem(title: String, description: String): ContentListItemViewModel
         fun getContent(): List<ContentListItemViewModel>
     }
 }

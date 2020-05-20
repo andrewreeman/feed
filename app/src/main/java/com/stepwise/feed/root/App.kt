@@ -10,6 +10,7 @@ class App: Application() {
         super.onCreate()
 
         appComponent = DaggerAppComponent.builder()
+            .appModule(AppModule(this))
             .mainPageModule(MainPageModule())
             .build()
     }

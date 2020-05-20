@@ -57,4 +57,14 @@ class AddItemFragment: Fragment(), MainPageFragment {
         }
     }
 
+    fun showCreateNewItemError(error: CreateNewItemErrorViewModel) {
+        error.titleError?.let {
+            binding.mainActivityTitleEdit.error = it
+        }
+
+        error.descriptionError?.let {
+            binding.mainActivityDescriptionEdit.error = it
+        }
+    }
+
 }
