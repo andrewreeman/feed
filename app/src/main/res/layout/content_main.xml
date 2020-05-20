@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.recyclerview.widget.RecyclerView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
     android:id="@+id/scrolling_activity_list_items"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="bottom"
+    android:layout_gravity="top"
     android:clipToPadding="false"
-    android:scrollbars="vertical"
     android:padding="@dimen/content_padding"
-    tools:listItem="@layout/list_row"
-    tools:showIn="@layout/activity_main"
+    android:scrollbars="vertical"
+
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
     tools:context=".mainpage.MainPageActivity"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    tools:listItem="@layout/list_row"
+    tools:showIn="@layout/activity_main" />
