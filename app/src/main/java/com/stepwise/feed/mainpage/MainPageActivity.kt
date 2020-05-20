@@ -1,23 +1,19 @@
 package com.stepwise.feed.mainpage
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import com.stepwise.feed.R
-import com.stepwise.feed.mainpage.contentlist.ContentAdapter
-import com.stepwise.feed.mainpage.contentlist.ContentListItemViewModel
+import com.stepwise.feed.mainpage.contentlist.ContentListFragment
 import com.stepwise.feed.root.App
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
 import javax.inject.Inject
 
 class MainPageActivity : AppCompatActivity(), MainPageMVP.View {
 
-    private lateinit var contentItemAdapter: ContentAdapter
-    private val contentItemList = ArrayList<ContentListItemViewModel>()
+    private lateinit var contentListFragment: ContentListFragment
 
     @Inject
     lateinit var presenter: MainPageMVP.Presenter
@@ -27,19 +23,24 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         (application as App).appComponent.inject(this)
-
-        contentItemAdapter = ContentAdapter(contentItemList)
         
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
-        
+
+        contentListFragment = ContentListFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .add(R.id.main_page_fragment_container, contentListFragment)
+            .commit()
+
         presenter.setView(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
         presenter.loadContent()
-        
-        main_activity_list_items.adapter = contentItemAdapter
-        main_activity_list_items.layoutManager = LinearLayoutManager(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -55,8 +56,7 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View {
     }
 
     override fun updateContent(viewModel: MainPageViewModel) {
-        contentItemList.addAll(viewModel.newItems)
-        contentItemAdapter.notifyDataSetChanged()
+        contentListFragment.updateContent(viewModel)
     }
 
     override fun navigateToAddItem() {
