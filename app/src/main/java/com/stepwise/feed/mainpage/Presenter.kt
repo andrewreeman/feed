@@ -13,4 +13,8 @@ class Presenter(private val model: MainPageMVP.Model): MainPageMVP.Presenter {
             it.updateContent(MainPageViewModel(content))
         }
     }
+
+    override fun onAddItemTapped() {
+        view?.navigateToAddItem()
+    }
 }

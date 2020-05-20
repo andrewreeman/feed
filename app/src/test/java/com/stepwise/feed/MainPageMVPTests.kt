@@ -25,7 +25,7 @@ class MainPageMVPTests {
     }
 
     @Test
-    fun loadContentFromRepositoryIntoViewWhenContentRequested() {
+    fun loadContentFromRepositoryIntoView_WhenContentRequested() {
         val listToSupply = listOf(item)
         val viewModelToExpect = MainPageViewModel(listToSupply)
 
@@ -35,5 +35,11 @@ class MainPageMVPTests {
 
         verify(mockModel, times(1)).getContent()
         verify(mockView, times(1)).updateContent(viewModelToExpect)
+    }
+
+    @Test
+    fun navigateToAddItemCalled_WhenOnAddItemTapped() {
+        presenter.onAddItemTapped()
+        verify(mockView, times(1)).navigateToAddItem()
     }
 }
