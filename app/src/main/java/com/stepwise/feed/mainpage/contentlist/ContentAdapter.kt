@@ -5,16 +5,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.stepwise.feed.R
-
+import com.stepwise.feed.databinding.ContentItemBinding
 
 class ContentAdapter(private val content: List<ContentListItemViewModel>): RecyclerView.Adapter<ContentAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val contentItemView = LayoutInflater.from(parent.context).inflate(R.layout.content_item, parent, false)
+        val binding = ContentItemBinding.bind(contentItemView)
         return ViewHolder(
-            contentItemView
+            binding
         )
     }
 
@@ -27,17 +26,9 @@ class ContentAdapter(private val content: List<ContentListItemViewModel>): Recyc
         return content.size
     }
 
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-
-        @BindView(R.id.main_page_list_item_title)
-        lateinit var title: TextView
-
-        @BindView(R.id.main_page_list_item_description)
-        lateinit var description: TextView
-
-        init {
-            ButterKnife.bind(this, view)
-        }
+    class ViewHolder(view: ContentItemBinding): RecyclerView.ViewHolder(view.root) {
+        var title: TextView = view.mainPageListItemTitle
+        var description: TextView = view.mainPageListItemDescription
 
         fun set(vm: ContentListItemViewModel) {
             title.text = vm.title
