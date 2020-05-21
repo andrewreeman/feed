@@ -6,4 +6,5 @@
     <dimen name="content_padding_large">32dp</dimen>
     <dimen name="card_radius">4dp</dimen>
     <dimen name="card_margin">8dp</dimen>
+    <dimen name="card_padding">8dp</dimen>
 </resources>
