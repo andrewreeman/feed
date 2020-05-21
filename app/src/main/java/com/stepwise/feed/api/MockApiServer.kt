@@ -1,5 +1,6 @@
 package com.stepwise.feed.api
 
+import com.google.gson.Gson
 import kotlinx.coroutines.*
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.Dispatcher
@@ -7,7 +8,9 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 import java.lang.Runnable
+import java.util.*
 import java.util.concurrent.Executors
+import kotlin.collections.ArrayList
 
 /**
  * this is a hacky way of simulating a real api as 'close to the network' as possible.
@@ -57,9 +60,31 @@ class MockApiServer {
     }
 
     class RequestHandler: Dispatcher() {
-        override fun dispatch(request: RecordedRequest): MockResponse {
-            return MockResponse().setBody("[{\"title\": \"A mock title\", \"description\": \"A mock description\"}]")
+        private val gson = Gson()
+        private var data = ArrayList<ContentApiModel>()
+
+        init {
+            for(i in 0..5) {
+                data.add(ContentApiModel("Title $i", "Description $i"))
+            }
         }
+
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when(request.method?.toLowerCase(Locale.ROOT)) {
+                "get" -> MockResponse().setBody(gson.toJson(data))
+                "post" -> createNewData(request)
+                else  -> MockResponse().setHttp2ErrorCode(404)
+            }
+        }
+
+        private fun createNewData(request: RecordedRequest): MockResponse {
+            val body = request.body.readUtf8()
+            val newContent = gson.fromJson(body, ContentApiModel::class.java)
+
+            data.add(newContent)
+            return MockResponse().setBody(gson.toJson(newContent))
+        }
+
 
     }
 }

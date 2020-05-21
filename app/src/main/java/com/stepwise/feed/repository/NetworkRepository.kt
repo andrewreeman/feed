@@ -28,7 +28,7 @@ class NetworkRepository(private val api: ContentApi): Repository {
     }
 
     override suspend fun saveNew(c: Content): Content {
-        val savedContent = api.saveNewContent(c.title, c.description)
+        val savedContent = api.saveNewContent(ContentApiModel(c.title, c.description))
 //        return Content(savedContent.title, savedContent.description)
         return Content(savedContent.title, savedContent.description)
     }
