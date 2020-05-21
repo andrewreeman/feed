@@ -6,21 +6,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.mainpage.contentlist.ContentListFragment">
-
-    <androidx.recyclerview.widget.RecyclerView
-
-        android:id="@+id/main_activity_list_items"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/main_activity_swipe_refresh_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="top"
-        android:clipToPadding="false"
-        android:padding="@dimen/content_padding"
-        android:scrollbars="vertical"
+    >
+        <androidx.recyclerview.widget.RecyclerView
 
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:id="@+id/main_activity_list_items"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:clipToPadding="false"
+            android:padding="@dimen/content_padding"
+            android:scrollbars="vertical"
 
-        tools:context=".ui.mainpage.MainPageActivity"
-        tools:listItem="@layout/list_row"
-        tools:showIn="@layout/activity_main" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+            tools:context=".ui.mainpage.MainPageActivity"
+            tools:listItem="@layout/list_row"
+            tools:showIn="@layout/activity_main" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </FrameLayout>

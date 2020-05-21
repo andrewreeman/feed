@@ -69,28 +69,25 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
     override fun onResume() {
         super.onResume()
 
+        loadContentWhenInitialized()
+    }
 
-
+    private fun loadContentWhenInitialized() {
         launch {
-
             var i = 0
-            while(!this@MainPageActivity::presenter.isInitialized && i < 100) {
+            while (!this@MainPageActivity::presenter.isInitialized && i < 100) {
                 ++i
                 delay(100)
             }
 
-            if(i < 100) {
+            if (i < 100) {
                 presenter.loadContent()
-            }
-            else {
+            } else {
                 withContext(Dispatchers.Main) {
                     showSnackbarMessage("Could not initialize presenter")
                 }
             }
         }
-
-
-
     }
 
     override fun onDestroy() {
@@ -139,6 +136,10 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
 
     override fun onAddItemTapped(fragment: ContentListFragment) {
         presenter.onAddItemTapped()
+    }
+
+    override fun onRefresh() {
+
     }
 
     override fun onNewItemCreated(title: String, description: String) {

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.stepwise.feed.R
 import com.stepwise.feed.databinding.FragmentContentlistBinding
@@ -17,6 +18,7 @@ import com.stepwise.feed.ui.mainpage.MainPageViewModel
 
 interface ContentListFragmentListener {
     fun onAddItemTapped(fragment: ContentListFragment)
+    fun onRefresh()
 }
 
 class ContentListFragment: Fragment(), MainPageFragment {
@@ -49,6 +51,10 @@ class ContentListFragment: Fragment(), MainPageFragment {
             addItemDecoration(DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL))
             itemAnimator = DefaultItemAnimator()
             setHasFixedSize(true)
+        }
+
+        binding.mainActivitySwipeRefreshContainer.setOnRefreshListener {
+            listener.onRefresh()
         }
     }
 
