@@ -3,8 +3,6 @@ package com.stepwise.feed.ui.mainpage
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.animation.OvershootInterpolator
-import android.view.animation.ScaleAnimation
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -189,9 +187,5 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
     private fun enableFab() {
         main_activity_primary_button.isClickable = true
         animator.grow(main_activity_primary_button)
-    }
-
-    private fun loadContent() {
-
     }
 }

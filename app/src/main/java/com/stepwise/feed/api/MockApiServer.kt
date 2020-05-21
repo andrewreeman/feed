@@ -79,8 +79,9 @@ class MockApiServer {
 
         private fun createNewData(request: RecordedRequest): MockResponse {
             val body = request.body.readUtf8()
-            val newContent = gson.fromJson(body, ContentApiModel::class.java)
+            var newContent = gson.fromJson(body, ContentApiModel::class.java)
 
+            newContent = ContentApiModel(data.size, newContent.title, newContent.description)
             data.add(newContent)
             return MockResponse().setBody(gson.toJson(newContent))
         }

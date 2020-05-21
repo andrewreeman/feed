@@ -85,6 +85,7 @@ class ContentListFragment: Fragment(), MainPageFragment {
         }
 
         contentItemList.addAll(viewModel.newItems)
+        contentItemList.sortByDescending { it.id }
         contentItemAdapter.notifyDataSetChanged()
     }
 
