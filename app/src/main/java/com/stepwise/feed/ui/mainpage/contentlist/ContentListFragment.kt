@@ -43,11 +43,13 @@ class ContentListFragment: Fragment(), MainPageFragment {
         binding = FragmentContentlistBinding.bind(view)
 
         contentItemAdapter = ContentAdapter(contentItemList)
-        binding.mainActivityListItems.adapter = contentItemAdapter
-        binding.mainActivityListItems.layoutManager = LinearLayoutManager(this.context)
-        binding.mainActivityListItems.addItemDecoration(DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL))
-        binding.mainActivityListItems.itemAnimator = DefaultItemAnimator()
-        binding.mainActivityListItems.setHasFixedSize(true)
+        binding.mainActivityListItems.apply {
+            adapter = contentItemAdapter
+            layoutManager = LinearLayoutManager(this.context)
+            addItemDecoration(DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL))
+            itemAnimator = DefaultItemAnimator()
+            setHasFixedSize(true)
+        }
     }
 
     override fun onAttach(context: Context) {
