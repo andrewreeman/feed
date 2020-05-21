@@ -1,4 +1,4 @@
-package com.stepwise.feed.ui.root
+package com.stepwise.feed.root
 
 import com.stepwise.feed.repository.ContentRepositoryModule
 import com.stepwise.feed.ui.mainpage.MainPageActivity

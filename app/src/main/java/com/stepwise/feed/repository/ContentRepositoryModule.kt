@@ -5,8 +5,10 @@ import com.stepwise.feed.api.ContentApi
 import dagger.Module
 import dagger.Provides
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
+import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.mockwebserver.MockWebServer
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -18,8 +20,8 @@ class ContentRepositoryModule {
 
     @Provides
     fun provideRepository(api: ContentApi): Repository {
-//        return InMemoryRepository()
-        return NetworkRepository(api)
+        val repo =  NetworkRepository(api)
+        return InMemoryRepository()
     }
 
     @Provides
@@ -29,13 +31,12 @@ class ContentRepositoryModule {
 
         return OkHttpClient.Builder()
             .addInterceptor(interceptor)
-
             .build()
     }
 
     @Provides
-    fun provideRetrofit(client: OkHttpClient): Retrofit {
-        return provideRetrofit(BASE_URL, client)
+    fun provideRetrofit(baseUrlOfMockServer: HttpUrl?, client: OkHttpClient): Retrofit {
+        return provideRetrofit(baseUrlOfMockServer?.toString() ?: BASE_URL, client)
     }
 
     @Provides
@@ -48,8 +49,9 @@ class ContentRepositoryModule {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(client)
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            //.addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
+
             .build()
     }
 }

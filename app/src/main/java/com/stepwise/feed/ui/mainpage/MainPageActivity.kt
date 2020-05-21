@@ -14,7 +14,7 @@ import com.stepwise.feed.ui.mainpage.addcontent.CreateNewItemErrorViewModel
 import com.stepwise.feed.ui.mainpage.contentlist.ContentListFragment
 import com.stepwise.feed.ui.mainpage.contentlist.ContentListFragmentListener
 import com.stepwise.feed.ui.mainpage.contentlist.ContentListItemViewModel
-import com.stepwise.feed.ui.root.App
+import com.stepwise.feed.root.App
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
