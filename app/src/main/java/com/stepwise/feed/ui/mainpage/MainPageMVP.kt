@@ -18,10 +18,11 @@ interface MainPageMVP {
         fun loadContent()
         fun onAddItemTapped()
         fun createNewItem(title: String, description: String)
+        fun onDestroy()
     }
 
     interface Model {
-        fun createNewItem(title: String, description: String): ContentListItemViewModel
-        fun getContent(): List<ContentListItemViewModel>
+        suspend fun createNewItem(title: String, description: String): ContentListItemViewModel
+        suspend fun getContent(): List<ContentListItemViewModel>
     }
 }

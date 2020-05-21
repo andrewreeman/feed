@@ -1,10 +1,8 @@
 package com.stepwise.feed.repository
 
-import com.google.gson.GsonBuilder
 import com.stepwise.feed.api.ContentApi
 import dagger.Module
 import dagger.Provides
-import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

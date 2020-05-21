@@ -5,7 +5,7 @@ import com.stepwise.feed.domain.model.Content
 class InMemoryRepository: Repository {
     private var _content = ArrayList<Content>()
 
-    override fun loadContent(): List<Content> {
+    override suspend fun loadContent(): List<Content> {
 
         if(_content.isEmpty()) {
             for (i in 0..20) {
@@ -21,7 +21,7 @@ class InMemoryRepository: Repository {
         return _content
     }
 
-    override fun saveNew(c: Content): Content {
+    override suspend fun saveNew(c: Content): Content {
         _content.add(c)
         return c
     }

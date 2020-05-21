@@ -16,13 +16,16 @@ import com.stepwise.feed.ui.mainpage.contentlist.ContentListFragmentListener
 import com.stepwise.feed.ui.mainpage.contentlist.ContentListItemViewModel
 import com.stepwise.feed.root.App
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.*
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 interface MainPageFragment {
     fun configurePrimaryButton(fab: FloatingActionButton)
 }
 
 class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
+    CoroutineScope,
     ContentListFragmentListener,
     AddItemFragmentListener
 {
@@ -31,6 +34,11 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
 
     @Inject
     lateinit var presenter: MainPageMVP.Presenter
+
+    override val coroutineContext: CoroutineContext
+    get() = Dispatchers.IO + job
+
+    private val job = Job()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,9 +68,35 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
 
     override fun onResume() {
         super.onResume()
-        (application as App).mockServer.onReady {
-            presenter.loadContent()
+
+
+
+        launch {
+
+            var i = 0
+            while(!this@MainPageActivity::presenter.isInitialized && i < 100) {
+                ++i
+                delay(100)
+            }
+
+            if(i < 100) {
+                presenter.loadContent()
+            }
+            else {
+                withContext(Dispatchers.Main) {
+                    showSnackbarMessage("Could not initialize presenter")
+                }
+            }
         }
+
+
+
+    }
+
+    override fun onDestroy() {
+        job.cancel()
+        presenter.onDestroy()
+        super.onDestroy()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

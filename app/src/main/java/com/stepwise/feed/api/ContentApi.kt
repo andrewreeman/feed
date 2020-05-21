@@ -6,8 +6,8 @@ import retrofit2.http.POST
 
 interface ContentApi {
     @GET("/api/v2/content")
-    fun getContent(): Call<List<ContentApiModel>>
+    suspend fun getContent(): List<ContentApiModel>
 
     @POST("/api/v2/content")
-    fun saveNewContent(title: String, description: String): Call<ContentApiModel>
+    suspend fun saveNewContent(title: String, description: String): ContentApiModel
 }

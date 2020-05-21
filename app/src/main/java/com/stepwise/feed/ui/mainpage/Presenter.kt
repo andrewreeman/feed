@@ -4,9 +4,16 @@ import android.content.res.Resources
 import com.stepwise.feed.R
 import com.stepwise.feed.api.MockApiServer
 import com.stepwise.feed.ui.mainpage.addcontent.CreateNewItemErrorViewModel
+import kotlinx.coroutines.*
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
-class Presenter(private val model: MainPageMVP.Model, private val resources: Resources): MainPageMVP.Presenter {
+class Presenter(private val model: MainPageMVP.Model, private val resources: Resources): MainPageMVP.Presenter, CoroutineScope {
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.IO + job
+
+    private val job = Job()
+
     private var view: MainPageMVP.View? = null
 
     override fun setView(view: MainPageMVP.View) {
@@ -14,9 +21,12 @@ class Presenter(private val model: MainPageMVP.Model, private val resources: Res
     }
 
     override fun loadContent() {
-        view?.let {
+        if(view == null) { return }
+        launch {
             val content = model.getContent()
-            it.updateContent(MainPageViewModel(content))
+            withContext(Dispatchers.Main) {
+                view?.updateContent(MainPageViewModel(content))
+            }
         }
     }
 
@@ -40,8 +50,17 @@ class Presenter(private val model: MainPageMVP.Model, private val resources: Res
             view?.createNewItemError(CreateNewItemErrorViewModel(titleError, descriptionError))
         }
         else {
-            val newItem = model.createNewItem(title, description)
-            view?.onNewItemCreated(newItem)
+            launch {
+                val newItem = model.createNewItem(title, description)
+
+                withContext(Dispatchers.Main) {
+                    view?.onNewItemCreated(newItem)
+                }
+            }
         }
+    }
+
+    override fun onDestroy() {
+        job.cancel()
     }
 }
