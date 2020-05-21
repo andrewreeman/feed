@@ -6,15 +6,23 @@ import com.stepwise.feed.ui.mainpage.MainPageViewModel
 import com.stepwise.feed.ui.mainpage.Presenter
 import com.stepwise.feed.ui.mainpage.addcontent.CreateNewItemErrorViewModel
 import com.stepwise.feed.ui.mainpage.contentlist.ContentListItemViewModel
+import kotlinx.coroutines.*
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.*
 
+@ExperimentalCoroutinesApi
+@ObsoleteCoroutinesApi
 class MainPageMVPTests {
     private lateinit var mockModel: MainPageMVP.Model
     private lateinit var mockView: MainPageMVP.View
     private lateinit var presenter: Presenter
     private lateinit var item: ContentListItemViewModel
+    private val mainThreadSurrogate = newSingleThreadContext("UI thread")
 
     @Before
     fun setup() {
@@ -24,29 +32,36 @@ class MainPageMVPTests {
         presenter.setView(mockView)
 
         item = ContentListItemViewModel("A title", "A description")
+        Dispatchers.setMain(mainThreadSurrogate)
+    }
+
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
+        mainThreadSurrogate.close()
     }
 
     @Test
-    fun loadContentFromRepositoryIntoView_WhenContentRequested() {
+    fun loadContentFromRepositoryIntoView_WhenContentRequested() = runBlockingTest {
         val listToSupply = listOf(item)
         val viewModelToExpect = MainPageViewModel(listToSupply)
 
         `when`(mockModel.getContent()).thenReturn(listToSupply)
 
         presenter.loadContent()
-
         verify(mockModel, times(1)).getContent()
         verify(mockView, times(1)).updateContent(viewModelToExpect)
+
     }
 
     @Test
-    fun navigateToAddItemCalled_WhenOnAddItemTapped() {
+    fun navigateToAddItemCalled_WhenOnAddItemTapped()  {
         presenter.onAddItemTapped()
         verify(mockView, times(1)).navigateToAddItem()
     }
 
     @Test
-    fun creatingNewItem_WithoutTitle_WillShowError() {
+    fun creatingNewItem_WithoutTitle_WillShowError() = runBlockingTest {
         presenter.createNewItem("", "Description")
 
         val expectedErrorVM = CreateNewItemErrorViewModel("", null)
@@ -56,7 +71,7 @@ class MainPageMVPTests {
     }
 
     @Test
-    fun creatingNewItem_WithoutDescription_WillShowError() {
+    fun creatingNewItem_WithoutDescription_WillShowError() = runBlockingTest {
         presenter.createNewItem("Title", "")
 
         val expectedErrorVM = CreateNewItemErrorViewModel(null, "")
@@ -66,7 +81,7 @@ class MainPageMVPTests {
     }
 
     @Test
-    fun creatingNewItem_Correctly_WillCreateNewItemInModel() {
+    fun creatingNewItem_Correctly_WillCreateNewItemInModel() = runBlockingTest {
         val newItem = ContentListItemViewModel("Title", "Description")
         `when`(mockModel.createNewItem("Title", "Description")).thenReturn(newItem)
 

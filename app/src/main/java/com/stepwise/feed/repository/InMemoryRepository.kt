@@ -11,6 +11,7 @@ class InMemoryRepository: Repository {
             for (i in 0..20) {
                 _content.add(
                     Content(
+                        i,
                         "Title " + i,
                         "Description " + i
                     )

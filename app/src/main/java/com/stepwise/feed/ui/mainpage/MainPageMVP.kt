@@ -15,10 +15,9 @@ interface MainPageMVP {
 
     interface Presenter {
         fun setView(view: MainPageMVP.View)
-        fun loadContent()
         fun onAddItemTapped()
-        fun createNewItem(title: String, description: String)
-        fun onDestroy()
+        suspend fun loadContent()
+        suspend fun createNewItem(title: String, description: String)
     }
 
     interface Model {

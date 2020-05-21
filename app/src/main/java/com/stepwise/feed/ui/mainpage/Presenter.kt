@@ -8,33 +8,25 @@ import kotlinx.coroutines.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-class Presenter(private val model: MainPageMVP.Model, private val resources: Resources): MainPageMVP.Presenter, CoroutineScope {
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.IO + job
-
-    private val job = Job()
-
+class Presenter(private val model: MainPageMVP.Model, private val resources: Resources): MainPageMVP.Presenter {
     private var view: MainPageMVP.View? = null
 
     override fun setView(view: MainPageMVP.View) {
         this.view = view
     }
 
-    override fun loadContent() {
+    override suspend fun loadContent() {
         if(view == null) { return }
-        launch {
-            val content = model.getContent()
-            withContext(Dispatchers.Main) {
-                view?.updateContent(MainPageViewModel(content))
-            }
-        }
+
+        val content = model.getContent()
+        view?.updateContent(MainPageViewModel(content))
     }
 
     override fun onAddItemTapped() {
         view?.navigateToAddItem()
     }
 
-    override fun createNewItem(title: String, description: String) {
+    override suspend fun createNewItem(title: String, description: String) {
         var titleError: String? = null
         var descriptionError: String? = null
 
@@ -50,17 +42,8 @@ class Presenter(private val model: MainPageMVP.Model, private val resources: Res
             view?.createNewItemError(CreateNewItemErrorViewModel(titleError, descriptionError))
         }
         else {
-            launch {
-                val newItem = model.createNewItem(title, description)
-
-                withContext(Dispatchers.Main) {
-                    view?.onNewItemCreated(newItem)
-                }
-            }
+            val newItem = model.createNewItem(title, description)
+            view?.onNewItemCreated(newItem)
         }
-    }
-
-    override fun onDestroy() {
-        job.cancel()
     }
 }

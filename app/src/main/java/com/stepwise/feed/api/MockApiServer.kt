@@ -96,7 +96,7 @@ class MockApiServer {
         }
 
         private fun newModel(index: Int): ContentApiModel {
-            return ContentApiModel("Title $index", "Description $index")
+            return ContentApiModel(index, "Title $index", "Description $index")
         }
 
     }

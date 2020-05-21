@@ -11,7 +11,7 @@ class Model(private val repository: Repository): MainPageMVP.Model {
     }
 
     override suspend fun createNewItem(title: String, description: String): ContentListItemViewModel {
-        val createdContent = repository.saveNew(Content(title, description))
+        val createdContent = repository.saveNew(Content(-1, title, description))
         return ContentListItemViewModel.fromContent(createdContent)
     }
 }

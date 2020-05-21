@@ -68,7 +68,6 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
 
     override fun onResume() {
         super.onResume()
-
         loadContentWhenInitialized()
     }
 
@@ -92,7 +91,6 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
 
     override fun onDestroy() {
         job.cancel()
-        presenter.onDestroy()
         super.onDestroy()
     }
 
@@ -109,7 +107,9 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
     }
 
     override fun updateContent(viewModel: MainPageViewModel) {
-        contentListFragment.updateContent(viewModel)
+        runOnUiThread {
+            contentListFragment.updateContent(viewModel)
+        }
     }
 
     override fun navigateToAddItem() {
@@ -139,11 +139,15 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
     }
 
     override fun onRefresh() {
-        presenter.loadContent()
+        launch {
+            presenter.loadContent()
+        }
     }
 
     override fun onNewItemCreated(title: String, description: String) {
-        presenter.createNewItem(title, description)
+        launch {
+            presenter.createNewItem(title, description)
+        }
     }
 
     private fun configurePrimaryButton(fragment: Fragment?) {
