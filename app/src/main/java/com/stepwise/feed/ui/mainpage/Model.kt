@@ -1,13 +1,17 @@
 package com.stepwise.feed.ui.mainpage
 
+import android.util.Log
 import com.stepwise.feed.domain.model.Content
 import com.stepwise.feed.repository.Repository
-import com.stepwise.feed.ui.mainpage.contentlist.ContentListItemViewModel
-
 
 class Model(private val repository: Repository): MainPageMVP.Model {
     override suspend fun getContent(): List<Content> {
-        return repository.loadContent()
+        return try {
+            repository.loadContent()
+        } catch (e: Exception) {
+            Log.e("Model", e.toString())
+            ArrayList()
+        }
     }
 
     override suspend fun createNewItem(title: String, description: String): Content {

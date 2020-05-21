@@ -1,6 +1,7 @@
 package com.stepwise.feed.root
 
 import android.app.Application
+import com.stepwise.feed.R
 import com.stepwise.feed.api.MockApiServer
 import com.stepwise.feed.repository.ContentRepositoryModule
 import com.stepwise.feed.ui.mainpage.MainPageModule
@@ -19,7 +20,7 @@ class App: Application() {
     override fun onCreate() {
         super.onCreate()
 
-        mockServer.start()
+        mockServer.start(resources)
         appComponent = DaggerAppComponent.builder()
             .appModule(AppModule(this))
             .mainPageModule(MainPageModule())

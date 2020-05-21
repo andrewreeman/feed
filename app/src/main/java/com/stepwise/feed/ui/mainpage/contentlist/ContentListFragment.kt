@@ -79,11 +79,6 @@ class ContentListFragment: Fragment(), MainPageFragment {
     fun updateContent(viewModel: MainPageViewModel) {
         binding.mainActivitySwipeRefreshContainer.isRefreshing = false
 
-        // TODO: nasty way to replace items instead of just adding new ones
-        if(viewModel.newItems.size > 1) {
-            contentItemList.clear()
-        }
-
         contentItemList.addAll(viewModel.newItems)
         contentItemList.sortByDescending { it.id }
         contentItemAdapter.notifyDataSetChanged()
