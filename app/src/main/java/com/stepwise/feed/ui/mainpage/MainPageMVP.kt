@@ -2,6 +2,7 @@
 
 package com.stepwise.feed.ui.mainpage
 
+import com.stepwise.feed.domain.model.Content
 import com.stepwise.feed.ui.mainpage.addcontent.CreateNewItemErrorViewModel
 import com.stepwise.feed.ui.mainpage.contentlist.ContentListItemViewModel
 
@@ -21,7 +22,7 @@ interface MainPageMVP {
     }
 
     interface Model {
-        suspend fun createNewItem(title: String, description: String): ContentListItemViewModel
-        suspend fun getContent(): List<ContentListItemViewModel>
+        suspend fun createNewItem(title: String, description: String): Content
+        suspend fun getContent(): List<Content>
     }
 }

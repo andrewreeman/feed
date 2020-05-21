@@ -1,6 +1,7 @@
 package com.stepwise.feed
 
 import android.content.res.Resources
+import com.stepwise.feed.domain.model.Content
 import com.stepwise.feed.ui.mainpage.MainPageMVP
 import com.stepwise.feed.ui.mainpage.MainPageViewModel
 import com.stepwise.feed.ui.mainpage.Presenter
@@ -21,7 +22,7 @@ class MainPageMVPTests {
     private lateinit var mockModel: MainPageMVP.Model
     private lateinit var mockView: MainPageMVP.View
     private lateinit var presenter: Presenter
-    private lateinit var item: ContentListItemViewModel
+    private lateinit var item: Content
     private val mainThreadSurrogate = newSingleThreadContext("UI thread")
 
     @Before
@@ -31,7 +32,7 @@ class MainPageMVPTests {
         presenter = Presenter(mockModel, mock(Resources::class.java, RETURNS_MOCKS))
         presenter.setView(mockView)
 
-        item = ContentListItemViewModel("A title", "A description")
+        item = Content(-1,"A title", "A description")
         Dispatchers.setMain(mainThreadSurrogate)
     }
 
@@ -43,10 +44,10 @@ class MainPageMVPTests {
 
     @Test
     fun loadContentFromRepositoryIntoView_WhenContentRequested() = runBlockingTest {
-        val listToSupply = listOf(item)
+        val listToSupply = listOf(item).map{ ContentListItemViewModel.fromContent(it) }
         val viewModelToExpect = MainPageViewModel(listToSupply)
 
-        `when`(mockModel.getContent()).thenReturn(listToSupply)
+        `when`(mockModel.getContent()).thenReturn(listOf(item))
 
         presenter.loadContent()
         verify(mockModel, times(1)).getContent()
@@ -82,13 +83,13 @@ class MainPageMVPTests {
 
     @Test
     fun creatingNewItem_Correctly_WillCreateNewItemInModel() = runBlockingTest {
-        val newItem = ContentListItemViewModel("Title", "Description")
+        val newItem = Content(-1, "Title", "Description")
         `when`(mockModel.createNewItem("Title", "Description")).thenReturn(newItem)
 
         presenter.createNewItem("Title", "Description")
 
         verify(mockView, never()).createNewItemError(MockitoHelper.anyObject())
-        verify(mockView, times(1)).onNewItemCreated(newItem)
+        verify(mockView, times(1)).onNewItemCreated(ContentListItemViewModel.fromContent(newItem))
         verify(mockModel, times(1)).createNewItem("Title", "Description")
     }
 

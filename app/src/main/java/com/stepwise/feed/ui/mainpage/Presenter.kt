@@ -4,6 +4,7 @@ import android.content.res.Resources
 import com.stepwise.feed.R
 import com.stepwise.feed.api.MockApiServer
 import com.stepwise.feed.ui.mainpage.addcontent.CreateNewItemErrorViewModel
+import com.stepwise.feed.ui.mainpage.contentlist.ContentListItemViewModel
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
@@ -18,7 +19,7 @@ class Presenter(private val model: MainPageMVP.Model, private val resources: Res
     override suspend fun loadContent() {
         if(view == null) { return }
 
-        val content = model.getContent()
+        val content = model.getContent().map{ ContentListItemViewModel.fromContent(it) }
         view?.updateContent(MainPageViewModel(content))
     }
 
@@ -43,7 +44,7 @@ class Presenter(private val model: MainPageMVP.Model, private val resources: Res
         }
         else {
             val newItem = model.createNewItem(title, description)
-            view?.onNewItemCreated(newItem)
+            view?.onNewItemCreated(ContentListItemViewModel.fromContent(newItem))
         }
     }
 }

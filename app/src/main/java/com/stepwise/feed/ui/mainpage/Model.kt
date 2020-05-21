@@ -6,12 +6,11 @@ import com.stepwise.feed.ui.mainpage.contentlist.ContentListItemViewModel
 
 
 class Model(private val repository: Repository): MainPageMVP.Model {
-    override suspend fun getContent(): List<ContentListItemViewModel> {
-        return repository.loadContent().map { ContentListItemViewModel.fromContent(it)}
+    override suspend fun getContent(): List<Content> {
+        return repository.loadContent()
     }
 
-    override suspend fun createNewItem(title: String, description: String): ContentListItemViewModel {
-        val createdContent = repository.saveNew(Content(-1, title, description))
-        return ContentListItemViewModel.fromContent(createdContent)
+    override suspend fun createNewItem(title: String, description: String): Content {
+        return repository.saveNew(Content(-1, title, description))
     }
 }
