@@ -94,4 +94,8 @@ class ContentListFragment: Fragment(), MainPageFragment {
            this.listener.onAddItemTapped(this)
         }
     }
+
+    fun setRefreshing(b: Boolean) {
+        binding.mainActivitySwipeRefreshContainer.isRefreshing = b
+    }
 }

@@ -12,7 +12,7 @@ import com.stepwise.feed.databinding.FragmentAdditemBinding
 import com.stepwise.feed.ui.mainpage.MainPageFragment
 
 interface AddItemFragmentListener {
-    fun onNewItemCreated(title: String, description: String)
+    fun onAddItemFragmentComplete(title: String, description: String)
 }
 
 class AddItemFragment: Fragment(), MainPageFragment {
@@ -23,7 +23,6 @@ class AddItemFragment: Fragment(), MainPageFragment {
         @JvmStatic
         fun newInstance() = AddItemFragment()
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,7 +51,7 @@ class AddItemFragment: Fragment(), MainPageFragment {
     override fun configurePrimaryButton(fab: FloatingActionButton) {
         fab.setImageResource(R.drawable.baseline_check_white_18)
         fab.setOnClickListener { _ ->
-            listener.onNewItemCreated(binding.mainActivityTitleEdit.text.toString(), binding.mainActivityDescriptionEdit.text.toString())
+            listener.onAddItemFragmentComplete(binding.mainActivityTitleEdit.text.toString(), binding.mainActivityDescriptionEdit.text.toString())
         }
     }
 

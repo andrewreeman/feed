@@ -72,6 +72,8 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
     }
 
     private fun loadContentWhenInitialized() {
+        contentListFragment.setRefreshing(true)
+
         launch {
             var i = 0
             while (!this@MainPageActivity::presenter.isInitialized && i < 100) {
@@ -122,16 +124,20 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
     }
 
     override fun onNewItemCreated(newItem: ContentListItemViewModel) {
-        supportFragmentManager.popBackStack()
-        contentListFragment.updateContent(MainPageViewModel(listOf(newItem)))
-        showSnackbarMessage(getString(R.string.new_item_created))
+        runOnUiThread {
+            contentListFragment.setRefreshing(false)
+            contentListFragment.updateContent(MainPageViewModel(listOf(newItem)))
+            showSnackbarMessage(getString(R.string.new_item_created))
+        }
     }
 
     override fun createNewItemError(error: CreateNewItemErrorViewModel) {
         if(addItemFragment.isVisible) {
             addItemFragment.showCreateNewItemError(error)
-            showSnackbarMessage(getString(R.string.new_item_error))
         }
+
+        showSnackbarMessage(getString(R.string.new_item_error))
+        contentListFragment.setRefreshing(false)
     }
 
     override fun onAddItemTapped(fragment: ContentListFragment) {
@@ -144,7 +150,9 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
         }
     }
 
-    override fun onNewItemCreated(title: String, description: String) {
+    override fun onAddItemFragmentComplete(title: String, description: String) {
+        supportFragmentManager.popBackStackImmediate()
+        contentListFragment.setRefreshing(true)
         launch {
             presenter.createNewItem(title, description)
         }
