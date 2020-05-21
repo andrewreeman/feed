@@ -125,6 +125,7 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
 
     override fun onNewItemCreated(newItem: ContentListItemViewModel) {
         runOnUiThread {
+            supportFragmentManager.popBackStack()
             stopRefreshing()
             contentListFragment.updateContent(MainPageViewModel(listOf(newItem)))
             showSnackbarMessage(getString(R.string.new_item_created))
@@ -132,12 +133,13 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
     }
 
     override fun createNewItemError(error: CreateNewItemErrorViewModel) {
-        if(addItemFragment.isVisible) {
-            addItemFragment.showCreateNewItemError(error)
+        runOnUiThread {
+            if(addItemFragment.isVisible) {
+                addItemFragment.showCreateNewItemError(error)
+            }
+            showSnackbarMessage(getString(R.string.new_item_error))
+            stopRefreshing()
         }
-
-        showSnackbarMessage(getString(R.string.new_item_error))
-        stopRefreshing()
     }
 
     override fun onAddItemTapped(fragment: ContentListFragment) {
@@ -152,7 +154,6 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
     }
 
     override fun onAddItemFragmentComplete(title: String, description: String) {
-        supportFragmentManager.popBackStackImmediate()
         startRefreshing()
         launch {
             presenter.createNewItem(title, description)
