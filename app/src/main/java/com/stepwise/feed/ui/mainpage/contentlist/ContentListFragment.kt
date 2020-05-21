@@ -48,7 +48,6 @@ class ContentListFragment: Fragment(), MainPageFragment {
         binding.mainActivityListItems.apply {
             adapter = contentItemAdapter
             layoutManager = LinearLayoutManager(this.context)
-            addItemDecoration(DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL))
             itemAnimator = DefaultItemAnimator()
             setHasFixedSize(true)
         }
