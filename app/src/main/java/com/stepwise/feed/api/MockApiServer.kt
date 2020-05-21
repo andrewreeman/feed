@@ -10,6 +10,7 @@ import okhttp3.mockwebserver.RecordedRequest
 import java.lang.Runnable
 import java.util.*
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 /**
@@ -71,8 +72,8 @@ class MockApiServer {
 
         override fun dispatch(request: RecordedRequest): MockResponse {
             return when(request.method?.toLowerCase(Locale.ROOT)) {
-                "get" -> MockResponse().setBody(gson.toJson(data))
-                "post" -> createNewData(request)
+                "get" -> MockResponse().setBody(gson.toJson(data)).setBodyDelay(3, TimeUnit.SECONDS)
+                "post" -> createNewData(request).setBodyDelay(2, TimeUnit.SECONDS)
                 else  -> MockResponse().setHttp2ErrorCode(404)
             }
         }
