@@ -1,25 +1,27 @@
 package com.stepwise.feed.ui.mainpage
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.animation.OvershootInterpolator
+import android.view.animation.ScaleAnimation
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.stepwise.feed.R
+import com.stepwise.feed.root.App
 import com.stepwise.feed.ui.mainpage.addcontent.AddItemFragment
 import com.stepwise.feed.ui.mainpage.addcontent.AddItemFragmentListener
 import com.stepwise.feed.ui.mainpage.addcontent.CreateNewItemErrorViewModel
 import com.stepwise.feed.ui.mainpage.contentlist.ContentListFragment
 import com.stepwise.feed.ui.mainpage.contentlist.ContentListFragmentListener
 import com.stepwise.feed.ui.mainpage.contentlist.ContentListItemViewModel
-import com.stepwise.feed.root.App
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
+
 
 interface MainPageFragment {
     fun configurePrimaryButton(fab: FloatingActionButton)
@@ -30,6 +32,7 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
     ContentListFragmentListener,
     AddItemFragmentListener
 {
+    private val animator = FabAnimator()
     private lateinit var addItemFragment: AddItemFragment
     private lateinit var contentListFragment: ContentListFragment
 
@@ -69,7 +72,7 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
     }
 
     private fun loadContentWhenInitialized() {
-        contentListFragment.setRefreshing(true)
+        startRefreshing()
 
         launch {
             var i = 0
@@ -108,6 +111,7 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
 
     override fun updateContent(viewModel: MainPageViewModel) {
         runOnUiThread {
+            stopRefreshing()
             contentListFragment.updateContent(viewModel)
         }
     }
@@ -123,7 +127,7 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
 
     override fun onNewItemCreated(newItem: ContentListItemViewModel) {
         runOnUiThread {
-            contentListFragment.setRefreshing(false)
+            stopRefreshing()
             contentListFragment.updateContent(MainPageViewModel(listOf(newItem)))
             showSnackbarMessage(getString(R.string.new_item_created))
         }
@@ -135,7 +139,7 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
         }
 
         showSnackbarMessage(getString(R.string.new_item_error))
-        contentListFragment.setRefreshing(false)
+        stopRefreshing()
     }
 
     override fun onAddItemTapped(fragment: ContentListFragment) {
@@ -143,6 +147,7 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
     }
 
     override fun onRefresh() {
+        disableFab()
         launch {
             presenter.loadContent()
         }
@@ -150,7 +155,7 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
 
     override fun onAddItemFragmentComplete(title: String, description: String) {
         supportFragmentManager.popBackStackImmediate()
-        contentListFragment.setRefreshing(true)
+        startRefreshing()
         launch {
             presenter.createNewItem(title, description)
         }
@@ -164,5 +169,27 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
 
     private fun showSnackbarMessage(message: String) {
         Snackbar.make(activity_main_page_container, message, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun startRefreshing() {
+        disableFab()
+        contentListFragment.setRefreshing(true)
+    }
+
+    private fun stopRefreshing() {
+        enableFab()
+        contentListFragment.setRefreshing(false)
+    }
+
+    private fun disableFab() {
+        animator.shrink(main_activity_primary_button)
+    }
+
+    private fun enableFab() {
+        animator.grow(main_activity_primary_button)
+    }
+
+    private fun loadContent() {
+
     }
 }
