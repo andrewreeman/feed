@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.stepwise.feed.R
@@ -43,6 +45,9 @@ class ContentListFragment: Fragment(), MainPageFragment {
         contentItemAdapter = ContentAdapter(contentItemList)
         binding.mainActivityListItems.adapter = contentItemAdapter
         binding.mainActivityListItems.layoutManager = LinearLayoutManager(this.context)
+        binding.mainActivityListItems.addItemDecoration(DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL))
+        binding.mainActivityListItems.itemAnimator = DefaultItemAnimator()
+        binding.mainActivityListItems.setHasFixedSize(true)
     }
 
     override fun onAttach(context: Context) {
