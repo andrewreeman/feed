@@ -138,7 +138,6 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
                 addItemFragment.showCreateNewItemError(error)
             }
             showSnackbarMessage(getString(R.string.new_item_error))
-            stopRefreshing()
         }
     }
 
@@ -154,6 +153,13 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
     }
 
     override fun onAddItemFragmentComplete(title: String, description: String) {
+        val validationResult = presenter.validateNewItem(title, description)
+        if(validationResult != null) {
+            createNewItemError(validationResult)
+            return
+        }
+
+        showSnackbarMessage(getString(R.string.new_item_saving))
         startRefreshing()
         launch {
             presenter.createNewItem(title, description)
@@ -182,7 +188,17 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
 
     private fun disableFab() {
         main_activity_primary_button.isClickable = false
-        animator.shrink(main_activity_primary_button)
+
+        if(addItemFragment.isVisible) {
+            animator.shrink(main_activity_primary_button) {
+                if(addItemFragment.isVisible) {
+                    main_activity_primary_button.setImageResource(R.drawable.baseline_check_white_18)
+                }
+            }
+        }
+        else {
+            animator.shrink(main_activity_primary_button, null)
+        }
     }
 
     private fun enableFab() {

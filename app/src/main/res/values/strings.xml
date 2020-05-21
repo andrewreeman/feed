@@ -7,4 +7,5 @@
     <string name="new_item_error_title_empty">Title must not be empty</string>
     <string name="new_item_error_description_empty">Description must not be empty</string>
     <string name="new_item_created">New item created</string>
+    <string name="new_item_saving">Saving new quote…</string>
 </resources>

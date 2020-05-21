@@ -17,6 +17,7 @@ interface MainPageMVP {
     interface Presenter {
         fun setView(view: MainPageMVP.View)
         fun onAddItemTapped()
+        fun validateNewItem(title: String, description: String): CreateNewItemErrorViewModel?
         suspend fun loadContent()
         suspend fun createNewItem(title: String, description: String)
     }

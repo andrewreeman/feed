@@ -30,7 +30,7 @@ class Presenter(private val model: MainPageMVP.Model, private val resources: Res
         view?.navigateToAddItem()
     }
 
-    override suspend fun createNewItem(title: String, description: String) {
+    override fun validateNewItem(title: String, description: String): CreateNewItemErrorViewModel? {
         var titleError: String? = null
         var descriptionError: String? = null
 
@@ -43,7 +43,17 @@ class Presenter(private val model: MainPageMVP.Model, private val resources: Res
         }
 
         if(titleError != null || descriptionError != null) {
-            view?.createNewItemError(CreateNewItemErrorViewModel(titleError, descriptionError))
+            return CreateNewItemErrorViewModel(titleError, descriptionError)
+        }
+        else {
+            return null
+        }
+    }
+
+    override suspend fun createNewItem(title: String, description: String) {
+        val validationResult = validateNewItem(title, description)
+        if(validationResult != null) {
+            view?.createNewItemError(validationResult)
         }
         else {
             val newItem = model.createNewItem(title, description)
