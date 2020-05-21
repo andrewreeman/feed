@@ -139,7 +139,7 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
     }
 
     override fun onRefresh() {
-
+        presenter.loadContent()
     }
 
     override fun onNewItemCreated(title: String, description: String) {

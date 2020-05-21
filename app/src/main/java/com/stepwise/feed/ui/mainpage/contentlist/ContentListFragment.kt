@@ -53,9 +53,16 @@ class ContentListFragment: Fragment(), MainPageFragment {
             setHasFixedSize(true)
         }
 
-        binding.mainActivitySwipeRefreshContainer.setOnRefreshListener {
-            listener.onRefresh()
+        binding.mainActivitySwipeRefreshContainer.apply {
+            setOnRefreshListener {
+                listener.onRefresh()
+            }
+
+            setColorSchemeColors(
+                resources.getColor(R.color.colorPrimary, null), resources.getColor(R.color.colorAccent, null)
+            )
         }
+
     }
 
     override fun onAttach(context: Context) {
@@ -71,6 +78,13 @@ class ContentListFragment: Fragment(), MainPageFragment {
 
 
     fun updateContent(viewModel: MainPageViewModel) {
+        binding.mainActivitySwipeRefreshContainer.isRefreshing = false
+
+        // TODO: nasty way to replace items instead of just adding new ones
+        if(viewModel.newItems.size > 1) {
+            contentItemList.clear()
+        }
+
         contentItemList.addAll(viewModel.newItems)
         contentItemAdapter.notifyDataSetChanged()
     }

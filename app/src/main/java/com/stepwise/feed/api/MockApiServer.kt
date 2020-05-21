@@ -66,13 +66,13 @@ class MockApiServer {
 
         init {
             for(i in 0..5) {
-                data.add(ContentApiModel("Title $i", "Description $i"))
+                data.add(newModel(i))
             }
         }
 
         override fun dispatch(request: RecordedRequest): MockResponse {
             return when(request.method?.toLowerCase(Locale.ROOT)) {
-                "get" -> MockResponse().setBody(gson.toJson(data)).setBodyDelay(3, TimeUnit.SECONDS)
+                "get" -> loadData().setBodyDelay(3, TimeUnit.SECONDS)
                 "post" -> createNewData(request).setBodyDelay(2, TimeUnit.SECONDS)
                 else  -> MockResponse().setHttp2ErrorCode(404)
             }
@@ -86,6 +86,18 @@ class MockApiServer {
             return MockResponse().setBody(gson.toJson(newContent))
         }
 
+        private fun loadData(): MockResponse {
+            val size = data.size
+            for(i in size..size+3) {
+                data.add(newModel(i))
+            }
+
+            return MockResponse().setBody(gson.toJson(data))
+        }
+
+        private fun newModel(index: Int): ContentApiModel {
+            return ContentApiModel("Title $index", "Description $index")
+        }
 
     }
 }
