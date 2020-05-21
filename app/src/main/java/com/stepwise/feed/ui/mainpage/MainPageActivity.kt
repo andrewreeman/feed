@@ -1,6 +1,7 @@
 package com.stepwise.feed.ui.mainpage
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -59,10 +60,6 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
         val app = application as App
         app.mockServer.onReady {
             app.appComponent.inject(this)
-
-            runOnUiThread {
-                presenter.setView(this)
-            }
         }
     }
 
@@ -82,6 +79,7 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
             }
 
             if (i < 100) {
+                presenter.setView(this@MainPageActivity)
                 presenter.loadContent()
             } else {
                 withContext(Dispatchers.Main) {

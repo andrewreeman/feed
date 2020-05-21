@@ -21,7 +21,6 @@ import kotlin.collections.ArrayList
 class MockApiServer {
     var baseUrl: HttpUrl? = null
     private var server = MockWebServer()
-    private var whenReadyCallback: Runnable? = null
 
     private val backgroundScope = CoroutineScope(Executors.newSingleThreadExecutor().asCoroutineDispatcher())
 

@@ -1,5 +1,6 @@
 package com.stepwise.feed.repository
 
+import android.util.Log
 import com.stepwise.feed.api.ContentApi
 import com.stepwise.feed.api.ContentApiModel
 import com.stepwise.feed.domain.model.Content

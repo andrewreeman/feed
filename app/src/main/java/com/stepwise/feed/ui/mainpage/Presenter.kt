@@ -1,6 +1,7 @@
 package com.stepwise.feed.ui.mainpage
 
 import android.content.res.Resources
+import android.util.Log
 import com.stepwise.feed.R
 import com.stepwise.feed.api.MockApiServer
 import com.stepwise.feed.ui.mainpage.addcontent.CreateNewItemErrorViewModel
@@ -17,7 +18,9 @@ class Presenter(private val model: MainPageMVP.Model, private val resources: Res
     }
 
     override suspend fun loadContent() {
-        if(view == null) { return }
+        if(view == null) {
+            Log.w("Presenter", "Loading content. View is null but continuing anyway")
+        }
 
         val content = model.getContent().map{ ContentListItemViewModel.fromContent(it) }
         view?.updateContent(MainPageViewModel(content))
