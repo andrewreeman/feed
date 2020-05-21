@@ -182,10 +182,12 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
     }
 
     private fun disableFab() {
+        main_activity_primary_button.isClickable = false
         animator.shrink(main_activity_primary_button)
     }
 
     private fun enableFab() {
+        main_activity_primary_button.isClickable = true
         animator.grow(main_activity_primary_button)
     }
 
