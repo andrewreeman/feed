@@ -36,8 +36,6 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        (application as App).appComponent.inject(this)
-
         contentListFragment = ContentListFragment.newInstance()
         addItemFragment = AddItemFragment.newInstance()
         supportFragmentManager.addOnBackStackChangedListener {
@@ -47,15 +45,24 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
         supportFragmentManager.beginTransaction()
             .add(R.id.main_page_fragment_container, contentListFragment)
             .commit()
-        presenter.setView(this)
 
         configurePrimaryButton(contentListFragment)
+
+        val app = application as App
+        app.mockServer.onReady {
+            app.appComponent.inject(this)
+
+            runOnUiThread {
+                presenter.setView(this)
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
-
-        presenter.loadContent()
+        (application as App).mockServer.onReady {
+            presenter.loadContent()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -14,14 +14,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
 class ContentRepositoryModule {
-    companion object {
-        const val BASE_URL: String = "http://localhost:8080"
-    }
-
     @Provides
     fun provideRepository(api: ContentApi): Repository {
-        val repo =  NetworkRepository(api)
-        return InMemoryRepository()
+        return NetworkRepository(api)
+//        return InMemoryRepository()
     }
 
     @Provides
@@ -36,7 +32,7 @@ class ContentRepositoryModule {
 
     @Provides
     fun provideRetrofit(baseUrlOfMockServer: HttpUrl?, client: OkHttpClient): Retrofit {
-        return provideRetrofit(baseUrlOfMockServer?.toString() ?: BASE_URL, client)
+        return provideRetrofit(baseUrlOfMockServer?.toString() ?: "", client)
     }
 
     @Provides

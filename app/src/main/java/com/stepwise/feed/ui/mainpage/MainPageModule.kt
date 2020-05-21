@@ -1,6 +1,7 @@
 package com.stepwise.feed.ui.mainpage
 
 import android.content.Context
+import com.stepwise.feed.api.MockApiServer
 import com.stepwise.feed.repository.Repository
 import dagger.Module
 import dagger.Provides

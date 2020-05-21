@@ -1,28 +1,25 @@
 package com.stepwise.feed.root
 
 import android.app.Application
+import com.stepwise.feed.api.MockApiServer
 import com.stepwise.feed.repository.ContentRepositoryModule
 import com.stepwise.feed.ui.mainpage.MainPageModule
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.launch
 import okhttp3.HttpUrl
-import okhttp3.mockwebserver.MockWebServer
+import java.util.concurrent.Executors
 
 class App: Application() {
+    val mockServer = MockApiServer()
+    val baseUrl: HttpUrl? get() = mockServer.baseUrl
+
     lateinit var appComponent: AppComponent
-    lateinit var server: MockWebServer
-    var baseUrl: HttpUrl? = null
 
     override fun onCreate() {
         super.onCreate()
 
-        // this is a hacky way of simulating a real api as 'close to the network' as possible.
-        // It isn't create as it contains a race condition for initialising the base url
-        server = MockWebServer()
-        Thread {
-            server.start()
-            baseUrl = server.url("/")
-        }.start()
-
+        mockServer.start()
         appComponent = DaggerAppComponent.builder()
             .appModule(AppModule(this))
             .mainPageModule(MainPageModule())
