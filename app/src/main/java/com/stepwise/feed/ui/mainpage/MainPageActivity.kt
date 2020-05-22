@@ -61,12 +61,16 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
         val app = application as App
         app.mockServer.onReady {
             app.appComponent.inject(this)
+            presenter.setView(this@MainPageActivity)
         }
     }
 
     override fun onResume() {
         super.onResume()
-        loadContentWhenInitialized()
+
+        if(!contentListFragment.hasContentItems()) {
+            loadContentWhenInitialized()
+        }
     }
 
     private fun loadContentWhenInitialized() {
