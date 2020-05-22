@@ -1,8 +1,11 @@
 package com.stepwise.feed.ui.mainpage
 
+import android.app.Activity
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -163,6 +166,8 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
             return
         }
 
+        hideKeyboard()
+
         showSnackbarMessage(getString(R.string.new_item_saving))
         startRefreshing()
         launch {
@@ -205,5 +210,10 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
     private fun enableFab() {
         main_activity_primary_button.isClickable = true
         animator.grow(main_activity_primary_button)
+    }
+
+    private fun hideKeyboard() {
+        val inputMethodManager: InputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(main_activity_primary_button.windowToken, 0)
     }
 }
