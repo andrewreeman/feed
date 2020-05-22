@@ -1,19 +1,18 @@
 package com.stepwise.feed.repository
 
-import com.stepwise.feed.api.ContentApi
+import com.stepwise.feed.api.QuoteApi
 import dagger.Module
 import dagger.Provides
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import okhttp3.mockwebserver.MockWebServer
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
-class ContentRepositoryModule {
+class QuoteRepositoryModule {
     @Provides
-    fun provideRepository(api: ContentApi): Repository {
+    fun provideRepository(api: QuoteApi): Repository {
         return NetworkRepository(api)
 //        return InMemoryRepository()
     }
@@ -34,8 +33,8 @@ class ContentRepositoryModule {
     }
 
     @Provides
-    fun provideApi(retrofit: Retrofit): ContentApi {
-        return retrofit.create(ContentApi::class.java)
+    fun provideApi(retrofit: Retrofit): QuoteApi {
+        return retrofit.create(QuoteApi::class.java)
     }
 
     @Suppress("SameParameterValue")
@@ -43,9 +42,7 @@ class ContentRepositoryModule {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(client)
-            //.addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
-
             .build()
     }
 }

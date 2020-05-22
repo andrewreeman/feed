@@ -1,4 +1,4 @@
-package com.stepwise.feed.ui.mainpage.addcontent
+package com.stepwise.feed.ui.mainpage.addquote
 
 import android.content.Context
 import android.os.Bundle
@@ -8,20 +8,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.stepwise.feed.R
-import com.stepwise.feed.databinding.FragmentAdditemBinding
+import com.stepwise.feed.databinding.FragmentAddquoteBinding
 import com.stepwise.feed.ui.mainpage.MainPageFragment
 
-interface AddItemFragmentListener {
+interface AddQuoteFragmentListener {
     fun onAddItemFragmentComplete(title: String, description: String)
 }
 
-class AddItemFragment: Fragment(), MainPageFragment {
-    private lateinit var listener: AddItemFragmentListener
-    private lateinit var binding: FragmentAdditemBinding
+class AddQuoteFragment: Fragment(), MainPageFragment {
+    private lateinit var listener: AddQuoteFragmentListener
+    private lateinit var binding: FragmentAddquoteBinding
 
     companion object {
         @JvmStatic
-        fun newInstance() = AddItemFragment()
+        fun newInstance() = AddQuoteFragment()
     }
 
     override fun onCreateView(
@@ -29,22 +29,22 @@ class AddItemFragment: Fragment(), MainPageFragment {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_additem, container, false)
+        return inflater.inflate(R.layout.fragment_addquote, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentAdditemBinding.bind(view)
+        binding = FragmentAddquoteBinding.bind(view)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        if(context is AddItemFragmentListener) {
+        if(context is AddQuoteFragmentListener) {
             this.listener = context
         }
         else {
-            throw IllegalMonitorStateException("Context should implement AddItemFragmentListener interface")
+            throw IllegalMonitorStateException("Context should implement AddQuoteFragmentListener interface")
         }
     }
     
@@ -55,7 +55,7 @@ class AddItemFragment: Fragment(), MainPageFragment {
         }
     }
 
-    fun showCreateNewItemError(error: CreateNewItemErrorViewModel) {
+    fun showCreateNewItemError(error: CreateQuoteErrorViewModel) {
         error.titleError?.let {
             binding.mainActivityTitleEdit.error = it
         }

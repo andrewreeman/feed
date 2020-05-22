@@ -1,35 +1,35 @@
-package com.stepwise.feed.ui.mainpage.contentlist
+package com.stepwise.feed.ui.mainpage.quotelist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.stepwise.feed.R
-import com.stepwise.feed.databinding.ContentItemBinding
+import com.stepwise.feed.databinding.QuoteItemBinding
 
-class ContentAdapter(private val content: List<ContentListItemViewModel>): RecyclerView.Adapter<ContentAdapter.ViewHolder>() {
+class QuoteAdapter(private val quote: List<QuoteListItemViewModel>): RecyclerView.Adapter<QuoteAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val contentItemView = LayoutInflater.from(parent.context).inflate(R.layout.content_item, parent, false)
-        val binding = ContentItemBinding.bind(contentItemView)
+        val contentItemView = LayoutInflater.from(parent.context).inflate(R.layout.quote_item, parent, false)
+        val binding = QuoteItemBinding.bind(contentItemView)
         return ViewHolder(
             binding
         )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if(position >= content.size) { return }
-        holder.set(content.get(position))
+        if(position >= quote.size) { return }
+        holder.set(quote.get(position))
     }
 
     override fun getItemCount(): Int {
-        return content.size
+        return quote.size
     }
 
-    class ViewHolder(view: ContentItemBinding): RecyclerView.ViewHolder(view.root) {
+    class ViewHolder(view: QuoteItemBinding): RecyclerView.ViewHolder(view.root) {
         var title: TextView = view.mainPageListItemTitle
         var description: TextView = view.mainPageListItemDescription
 
-        fun set(vm: ContentListItemViewModel) {
+        fun set(vm: QuoteListItemViewModel) {
             title.text = vm.title
             description.text = vm.description
         }

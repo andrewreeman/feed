@@ -46,6 +46,6 @@
         app:layout_anchorGravity="bottom|end"
         app:srcCompat="@drawable/baseline_add_white_18" />
 
-    <include layout="@layout/content_main" />
+    <include layout="@layout/quotes_main" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

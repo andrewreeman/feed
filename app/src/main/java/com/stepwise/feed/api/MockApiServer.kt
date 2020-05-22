@@ -9,16 +9,11 @@ import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
-import java.io.BufferedInputStream
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import java.io.StringReader
-import java.lang.Runnable
 import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
-import java.util.stream.Stream
-import java.util.stream.Stream.empty
 import kotlin.collections.ArrayList
 
 /**
@@ -71,8 +66,8 @@ class MockApiServer {
 
     class RequestHandler: Dispatcher() {
         private val gson = Gson()
-        private var data = ArrayList<ContentApiModel>()
-        private var customData = ArrayList<ContentApiModel>()
+        private var data = ArrayList<QuoteApiModel>()
+        private var customData = ArrayList<QuoteApiModel>()
         private var dataIterator = data.iterator()
 
         override fun dispatch(request: RecordedRequest): MockResponse {
@@ -92,7 +87,7 @@ class MockApiServer {
                 .shuffled()
 
             quoteArray.forEachIndexed { index, quote ->
-                data.add(ContentApiModel(index, quote.author ?: "Unknown", quote.text))
+                data.add(QuoteApiModel(index, quote.author ?: "Unknown", quote.text))
             }
 
             dataIterator = data.iterator()
@@ -100,15 +95,15 @@ class MockApiServer {
 
         private fun createNewData(request: RecordedRequest): MockResponse {
             val body = request.body.readUtf8()
-            var newContent = gson.fromJson(body, ContentApiModel::class.java)
+            var newContent = gson.fromJson(body, QuoteApiModel::class.java)
 
-            newContent = ContentApiModel(data.size + customData.size, newContent.title, newContent.description)
+            newContent = QuoteApiModel(data.size + customData.size, newContent.author, newContent.quote)
             customData.add(newContent)
             return MockResponse().setBody(gson.toJson(newContent))
         }
 
         private fun loadData(): MockResponse {
-            val response = ArrayList<ContentApiModel>()
+            val response = ArrayList<QuoteApiModel>()
 
             var i = 0
             while (dataIterator.hasNext() && i<3) {
@@ -119,8 +114,8 @@ class MockApiServer {
             return MockResponse().setBody(gson.toJson(response))
         }
 
-        private fun newModel(index: Int): ContentApiModel {
-            return ContentApiModel(index, "Title $index", "Description $index")
+        private fun newModel(index: Int): QuoteApiModel {
+            return QuoteApiModel(index, "Title $index", "Description $index")
         }
     }
 

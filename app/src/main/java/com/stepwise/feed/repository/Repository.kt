@@ -1,8 +1,8 @@
 package com.stepwise.feed.repository
 
-import com.stepwise.feed.domain.model.Content
+import com.stepwise.feed.domain.model.Quote
 
 interface Repository {
-    suspend fun loadContent(): List<Content>
-    suspend fun saveNew(c: Content): Content
+    suspend fun loadQuotes(): List<Quote>
+    suspend fun saveNew(q: Quote): Quote
 }

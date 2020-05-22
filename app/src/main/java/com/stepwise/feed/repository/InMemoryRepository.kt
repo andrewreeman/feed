@@ -1,16 +1,16 @@
 package com.stepwise.feed.repository
 
-import com.stepwise.feed.domain.model.Content
+import com.stepwise.feed.domain.model.Quote
 
 class InMemoryRepository: Repository {
-    private var _content = ArrayList<Content>()
+    private var _content = ArrayList<Quote>()
 
-    override suspend fun loadContent(): List<Content> {
+    override suspend fun loadQuotes(): List<Quote> {
 
         if(_content.isEmpty()) {
             for (i in 0..20) {
                 _content.add(
-                    Content(
+                    Quote(
                         i,
                         "Title " + i,
                         "Description " + i
@@ -22,8 +22,8 @@ class InMemoryRepository: Repository {
         return _content
     }
 
-    override suspend fun saveNew(c: Content): Content {
-        _content.add(c)
-        return c
+    override suspend fun saveNew(q: Quote): Quote {
+        _content.add(q)
+        return q
     }
 }

@@ -1,4 +1,4 @@
-package com.stepwise.feed.ui.mainpage.contentlist
+package com.stepwise.feed.ui.mainpage.quotelist
 
 import android.content.Context
 import android.os.Bundle
@@ -10,41 +10,41 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.stepwise.feed.R
-import com.stepwise.feed.databinding.FragmentContentlistBinding
+import com.stepwise.feed.databinding.FragmentQuotelistBinding
 import com.stepwise.feed.ui.mainpage.MainPageFragment
 import com.stepwise.feed.ui.mainpage.MainPageViewModel
 
-interface ContentListFragmentListener {
-    fun onAddItemTapped(fragment: ContentListFragment)
+interface QuoteListFragmentListener {
+    fun onAddItemTapped(fragment: QuoteListFragment)
     fun onRefresh()
 }
 
-class ContentListFragment: Fragment(), MainPageFragment {
-    private lateinit var binding: FragmentContentlistBinding
-    private lateinit var contentItemAdapter: ContentAdapter
-    private lateinit var listener: ContentListFragmentListener
+class QuoteListFragment: Fragment(), MainPageFragment {
+    private lateinit var binding: FragmentQuotelistBinding
+    private lateinit var quoteItemAdapter: QuoteAdapter
+    private lateinit var listener: QuoteListFragmentListener
 
-    private val contentItemList = ArrayList<ContentListItemViewModel>()
+    private val contentItemList = ArrayList<QuoteListItemViewModel>()
 
     companion object {
         @JvmStatic
-        fun newInstance() = ContentListFragment()
+        fun newInstance() = QuoteListFragment()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_contentlist, container, false)
+        return inflater.inflate(R.layout.fragment_quotelist, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding = FragmentContentlistBinding.bind(view)
+        binding = FragmentQuotelistBinding.bind(view)
 
-        contentItemAdapter = ContentAdapter(contentItemList)
+        quoteItemAdapter = QuoteAdapter(contentItemList)
         binding.mainActivityListItems.apply {
-            adapter = contentItemAdapter
+            adapter = quoteItemAdapter
             layoutManager = LinearLayoutManager(this.context)
             itemAnimator = DefaultItemAnimator()
             setHasFixedSize(true)
@@ -59,17 +59,16 @@ class ContentListFragment: Fragment(), MainPageFragment {
                 resources.getColor(R.color.colorPrimary, null), resources.getColor(R.color.colorAccent, null)
             )
         }
-
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        if(context is ContentListFragmentListener) {
+        if(context is QuoteListFragmentListener) {
             this.listener = context
         }
         else {
-            throw IllegalMonitorStateException("Context should implement ContentListFragmentListener interface")
+            throw IllegalMonitorStateException("Context should implement QuoteListFragmentListener interface")
         }
     }
 
@@ -82,7 +81,7 @@ class ContentListFragment: Fragment(), MainPageFragment {
 
         contentItemList.addAll(viewModel.newItems)
         contentItemList.sortByDescending { it.id }
-        contentItemAdapter.notifyDataSetChanged()
+        quoteItemAdapter.notifyDataSetChanged()
     }
 
     override fun configurePrimaryButton(fab: FloatingActionButton) {

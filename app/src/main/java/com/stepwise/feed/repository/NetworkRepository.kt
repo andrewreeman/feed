@@ -1,17 +1,16 @@
 package com.stepwise.feed.repository
 
-import android.util.Log
-import com.stepwise.feed.api.ContentApi
-import com.stepwise.feed.api.ContentApiModel
-import com.stepwise.feed.domain.model.Content
+import com.stepwise.feed.api.QuoteApi
+import com.stepwise.feed.api.QuoteApiModel
+import com.stepwise.feed.domain.model.Quote
 
-class NetworkRepository(private val api: ContentApi): Repository {
-    override suspend fun loadContent(): List<Content> {
-        return api.getContent().map { Content.fromApiContent(it) }
+class NetworkRepository(private val api: QuoteApi): Repository {
+    override suspend fun loadQuotes(): List<Quote> {
+        return api.getContent().map { Quote.fromApiContent(it) }
     }
 
-    override suspend fun saveNew(c: Content): Content {
-        val savedContent = api.saveNewContent(ContentApiModel(c.id, c.title, c.description))
-        return Content.fromApiContent(savedContent)
+    override suspend fun saveNew(q: Quote): Quote {
+        val savedContent = api.saveNewContent(QuoteApiModel(q.id, q.author, q.quote))
+        return Quote.fromApiContent(savedContent)
     }
 }

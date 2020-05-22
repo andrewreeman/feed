@@ -3,12 +3,8 @@ package com.stepwise.feed.ui.mainpage
 import android.content.res.Resources
 import android.util.Log
 import com.stepwise.feed.R
-import com.stepwise.feed.api.MockApiServer
-import com.stepwise.feed.ui.mainpage.addcontent.CreateNewItemErrorViewModel
-import com.stepwise.feed.ui.mainpage.contentlist.ContentListItemViewModel
-import kotlinx.coroutines.*
-import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
+import com.stepwise.feed.ui.mainpage.addquote.CreateQuoteErrorViewModel
+import com.stepwise.feed.ui.mainpage.quotelist.QuoteListItemViewModel
 
 class Presenter(private val model: MainPageMVP.Model, private val resources: Resources): MainPageMVP.Presenter {
     private var view: MainPageMVP.View? = null
@@ -22,7 +18,7 @@ class Presenter(private val model: MainPageMVP.Model, private val resources: Res
             Log.w("Presenter", "Loading content. View is null but continuing anyway")
         }
 
-        val content = model.getContent().map{ ContentListItemViewModel.fromContent(it) }
+        val content = model.getContent().map{ QuoteListItemViewModel.fromContent(it) }
         view?.updateContent(MainPageViewModel(content))
     }
 
@@ -30,7 +26,7 @@ class Presenter(private val model: MainPageMVP.Model, private val resources: Res
         view?.navigateToAddItem()
     }
 
-    override fun validateNewItem(title: String, description: String): CreateNewItemErrorViewModel? {
+    override fun validateNewItem(title: String, description: String): CreateQuoteErrorViewModel? {
         var titleError: String? = null
         var descriptionError: String? = null
 
@@ -43,7 +39,7 @@ class Presenter(private val model: MainPageMVP.Model, private val resources: Res
         }
 
         if(titleError != null || descriptionError != null) {
-            return CreateNewItemErrorViewModel(titleError, descriptionError)
+            return CreateQuoteErrorViewModel(titleError, descriptionError)
         }
         else {
             return null
@@ -57,7 +53,7 @@ class Presenter(private val model: MainPageMVP.Model, private val resources: Res
         }
         else {
             val newItem = model.createNewItem(title, description)
-            view?.onNewItemCreated(ContentListItemViewModel.fromContent(newItem))
+            view?.onNewItemCreated(QuoteListItemViewModel.fromContent(newItem))
         }
     }
 }

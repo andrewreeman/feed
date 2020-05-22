@@ -1,7 +1,6 @@
 package com.stepwise.feed.ui.mainpage
 
 import android.app.Activity
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -12,12 +11,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.stepwise.feed.R
 import com.stepwise.feed.root.App
-import com.stepwise.feed.ui.mainpage.addcontent.AddItemFragment
-import com.stepwise.feed.ui.mainpage.addcontent.AddItemFragmentListener
-import com.stepwise.feed.ui.mainpage.addcontent.CreateNewItemErrorViewModel
-import com.stepwise.feed.ui.mainpage.contentlist.ContentListFragment
-import com.stepwise.feed.ui.mainpage.contentlist.ContentListFragmentListener
-import com.stepwise.feed.ui.mainpage.contentlist.ContentListItemViewModel
+import com.stepwise.feed.ui.mainpage.addquote.AddQuoteFragment
+import com.stepwise.feed.ui.mainpage.addquote.AddQuoteFragmentListener
+import com.stepwise.feed.ui.mainpage.addquote.CreateQuoteErrorViewModel
+import com.stepwise.feed.ui.mainpage.quotelist.QuoteListFragment
+import com.stepwise.feed.ui.mainpage.quotelist.QuoteListFragmentListener
+import com.stepwise.feed.ui.mainpage.quotelist.QuoteListItemViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import javax.inject.Inject
@@ -30,12 +29,12 @@ interface MainPageFragment {
 
 class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
     CoroutineScope,
-    ContentListFragmentListener,
-    AddItemFragmentListener
+    QuoteListFragmentListener,
+    AddQuoteFragmentListener
 {
     private val animator = FabAnimator()
-    private lateinit var addItemFragment: AddItemFragment
-    private lateinit var contentListFragment: ContentListFragment
+    private lateinit var addQuoteFragment: AddQuoteFragment
+    private lateinit var quoteListFragment: QuoteListFragment
 
     @Inject
     lateinit var presenter: MainPageMVP.Presenter
@@ -49,17 +48,17 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        contentListFragment = ContentListFragment.newInstance()
-        addItemFragment = AddItemFragment.newInstance()
+        quoteListFragment = QuoteListFragment.newInstance()
+        addQuoteFragment = AddQuoteFragment.newInstance()
         supportFragmentManager.addOnBackStackChangedListener {
             configurePrimaryButton(supportFragmentManager.fragments.first())
         }
 
         supportFragmentManager.beginTransaction()
-            .add(R.id.main_page_fragment_container, contentListFragment)
+            .add(R.id.main_page_fragment_container, quoteListFragment)
             .commit()
 
-        configurePrimaryButton(contentListFragment)
+        configurePrimaryButton(quoteListFragment)
 
         val app = application as App
         app.mockServer.onReady {
@@ -71,7 +70,7 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
     override fun onResume() {
         super.onResume()
 
-        if(!contentListFragment.hasContentItems()) {
+        if(!quoteListFragment.hasContentItems()) {
             loadContentWhenInitialized()
         }
     }
@@ -117,38 +116,38 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
     override fun updateContent(viewModel: MainPageViewModel) {
         runOnUiThread {
             stopRefreshing()
-            contentListFragment.updateContent(viewModel)
+            quoteListFragment.updateContent(viewModel)
         }
     }
 
     override fun navigateToAddItem() {
         supportFragmentManager
             .beginTransaction()
-            .remove(contentListFragment)
-            .add(R.id.main_page_fragment_container, addItemFragment)
+            .remove(quoteListFragment)
+            .add(R.id.main_page_fragment_container, addQuoteFragment)
             .addToBackStack(null)
             .commit()
     }
 
-    override fun onNewItemCreated(newItem: ContentListItemViewModel) {
+    override fun onNewItemCreated(newItem: QuoteListItemViewModel) {
         runOnUiThread {
             supportFragmentManager.popBackStack()
             stopRefreshing()
-            contentListFragment.updateContent(MainPageViewModel(listOf(newItem)))
+            quoteListFragment.updateContent(MainPageViewModel(listOf(newItem)))
             showSnackbarMessage(getString(R.string.new_item_created))
         }
     }
 
-    override fun createNewItemError(error: CreateNewItemErrorViewModel) {
+    override fun createNewItemError(error: CreateQuoteErrorViewModel) {
         runOnUiThread {
-            if(addItemFragment.isVisible) {
-                addItemFragment.showCreateNewItemError(error)
+            if(addQuoteFragment.isVisible) {
+                addQuoteFragment.showCreateNewItemError(error)
             }
             showSnackbarMessage(getString(R.string.new_item_error))
         }
     }
 
-    override fun onAddItemTapped(fragment: ContentListFragment) {
+    override fun onAddItemTapped(fragment: QuoteListFragment) {
         presenter.onAddItemTapped()
     }
 
@@ -187,18 +186,18 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
 
     private fun startRefreshing() {
         disableFab()
-        contentListFragment.setRefreshing(true)
+        quoteListFragment.setRefreshing(true)
     }
 
     private fun stopRefreshing() {
         enableFab()
-        contentListFragment.setRefreshing(false)
+        quoteListFragment.setRefreshing(false)
     }
 
     private fun disableFab() {
         main_activity_primary_button.isClickable = false
         animator.shrink(main_activity_primary_button) {
-            if(addItemFragment.isVisible) {
+            if(addQuoteFragment.isVisible) {
                 main_activity_primary_button.setImageResource(R.drawable.baseline_check_white_18)
             }
             else{

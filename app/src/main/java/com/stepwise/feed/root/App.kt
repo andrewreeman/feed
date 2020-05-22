@@ -1,15 +1,10 @@
 package com.stepwise.feed.root
 
 import android.app.Application
-import com.stepwise.feed.R
 import com.stepwise.feed.api.MockApiServer
-import com.stepwise.feed.repository.ContentRepositoryModule
+import com.stepwise.feed.repository.QuoteRepositoryModule
 import com.stepwise.feed.ui.mainpage.MainPageModule
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.asCoroutineDispatcher
-import kotlinx.coroutines.launch
 import okhttp3.HttpUrl
-import java.util.concurrent.Executors
 
 class App: Application() {
     val mockServer = MockApiServer()
@@ -24,7 +19,7 @@ class App: Application() {
         appComponent = DaggerAppComponent.builder()
             .appModule(AppModule(this))
             .mainPageModule(MainPageModule())
-            .contentRepositoryModule(ContentRepositoryModule())
+            .quoteRepositoryModule(QuoteRepositoryModule())
             .build()
     }
 }

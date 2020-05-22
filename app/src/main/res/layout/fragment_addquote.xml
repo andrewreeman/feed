@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.mainpage.addcontent.AddItemFragment"
+    tools:context=".ui.mainpage.addquote.AddQuoteFragment"
     android:layout_marginTop="@dimen/content_padding_large"
     android:padding="@dimen/content_padding"
     >
