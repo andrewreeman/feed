@@ -1,6 +1,7 @@
 package com.stepwise.feed.ui.mainpage
 
 import android.animation.AnimatorSet
+import android.content.res.ColorStateList
 import android.view.animation.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.stepwise.feed.R
@@ -13,7 +14,7 @@ class FabAnimator {
         Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f
     )
     private val rotateAnimationEnd = RotateAnimation(
-        30f, 90f,
+        0f, 360f,
         Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f
     )
 
@@ -22,7 +23,7 @@ class FabAnimator {
     private var onComplete: (() -> Unit)? = null
 
     init {
-        listOf(shrinkAnimation, growAnimation, rotateAnimation).forEach {
+        listOf(shrinkAnimation, growAnimation).forEach {
             it.apply{
                 fillBefore = true
                 fillAfter = true
@@ -38,9 +39,9 @@ class FabAnimator {
         rotateAnimationEnd.duration = 600
     }
 
-    fun shrink(fab: FloatingActionButton, onComplete: (() -> Unit)?) {
-        fab.setImageResource(R.drawable.baseline_add_white_18)
-        val set = AnimationSet(true)
+    fun shrink(fab: FloatingActionButton, onComplete: (() -> Unit)) {
+        fab.setImageResource(R.drawable.baseline_autorenew_white_18)
+        val set = AnimationSet(false)
         set.addAnimation(rotateAnimation)
         set.addAnimation(shrinkAnimation)
 
@@ -50,9 +51,10 @@ class FabAnimator {
 
     fun grow(fab: FloatingActionButton) {
         fab.postOnAnimation {
-            val set = AnimationSet(true)
+            val set = AnimationSet(false)
             set.addAnimation(rotateAnimationEnd)
             set.addAnimation(growAnimation)
+            set.interpolator = OvershootInterpolator()
 
             onComplete?.let {_onComplete ->
                 set.setAnimationListener( object : Animation.AnimationListener {

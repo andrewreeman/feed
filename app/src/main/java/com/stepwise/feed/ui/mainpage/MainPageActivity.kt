@@ -192,16 +192,13 @@ class MainPageActivity : AppCompatActivity(), MainPageMVP.View,
 
     private fun disableFab() {
         main_activity_primary_button.isClickable = false
-
-        if(addItemFragment.isVisible) {
-            animator.shrink(main_activity_primary_button) {
-                if(addItemFragment.isVisible) {
-                    main_activity_primary_button.setImageResource(R.drawable.baseline_check_white_18)
-                }
+        animator.shrink(main_activity_primary_button) {
+            if(addItemFragment.isVisible) {
+                main_activity_primary_button.setImageResource(R.drawable.baseline_check_white_18)
             }
-        }
-        else {
-            animator.shrink(main_activity_primary_button, null)
+            else{
+                main_activity_primary_button.setImageResource(R.drawable.baseline_add_white_18)
+            }
         }
     }
 
