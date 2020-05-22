@@ -10,7 +10,7 @@ import com.stepwise.feed.R
 class FabAnimator {
     private val shrinkAnimation = ScaleAnimation(1f, 0.5f, 1f, 0.5f)
     private val rotateAnimation = RotateAnimation(
-        30f, 90f,
+        0f, 360f,
         Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f
     )
     private val rotateAnimationEnd = RotateAnimation(
@@ -33,9 +33,8 @@ class FabAnimator {
             }
         }
 
-        rotateAnimation.duration = 200
+        rotateAnimation.duration = 600
         rotateAnimation.repeatCount = Animation.INFINITE
-
         rotateAnimationEnd.duration = 600
     }
 
@@ -54,7 +53,6 @@ class FabAnimator {
             val set = AnimationSet(false)
             set.addAnimation(rotateAnimationEnd)
             set.addAnimation(growAnimation)
-            set.interpolator = OvershootInterpolator()
 
             onComplete?.let {_onComplete ->
                 set.setAnimationListener( object : Animation.AnimationListener {
